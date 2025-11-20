@@ -21,11 +21,13 @@ let imageArray = []
 let imageIndexNum = 0
 
 let customerChoices = []
+let adsArray = []
 
 let canvas
 
 
 let shoppingBool = true
+let endingBool = false
 
 function preload(){
 	sky = loadImage('sky.jpg')
@@ -47,7 +49,9 @@ for(let i = 0; i < 11; i++){
     imageArray[i]=loadImage ('ci/'+ i + '.png')
   }
 
-
+for(let i = 0; i < 8; i++){
+    adsArray[i]=loadImage ('adImages/'+ i + '.png')
+  }
   print(imageArray.length)
 
 }
@@ -81,8 +85,9 @@ function setup() {
 
 function addToCart(){
 	if(imageIndexNum < imageArray.length -1){
-		imageIndexNum = imageIndexNum + 1
 		customerChoices.push(imageArray[imageIndexNum])
+		imageIndexNum = imageIndexNum + 1
+		
 		print(customerChoices)
 
 	}
@@ -98,6 +103,11 @@ function skipProduct(){
 	}
 }
 
+
+function intro(){
+	
+	
+}
 
 function shopping(){
 
@@ -125,14 +135,56 @@ function shopping(){
 	if(imageIndexNum == 10){
 		print("End of Shopping!")
 		shoppingBool = false
+		endingBool = true
 
 	}
+}
+
+
+
+function ending(){
+	shoppingCart.hide()
+	skipButton.hide()
+	textAlign(CENTER);
+	frameRate(15)
+	if(customerChoices.length == 0){
+		background(0)
+		fill(255)
+		text("You didn't choose anything, I don't understand you...", windowWidth/2, windowHeight/2)
+	}
+
+	if(customerChoices.length > 0){
+
+		//background(0)
+		
+
+		for(i = 0; i< adsArray.length; i++){
+			let randX = random(windowWidth)
+			let randY = random(windowHeight)
+			image(adsArray[i], randX, randY, adsArray[i].width/4, adsArray[i].height/4)
+		}
+
+		for(i = 0; i< customerChoices.length; i++){
+			image(customerChoices[i], i*imageArray[i].width/4+(imageArray[i].width/4+10), windowHeight/2, imageArray[i].width/4, imageArray[i].height/4)
+		}
+
+		fill(0)
+		text("In the age of digital consumerism, we’re not the customers — we’re the data being harvested.", windowWidth/2-450, windowHeight/2, 900)
+
+
+
+	}
+
 }
 
 function draw() {
 
 	if(shoppingBool == true){
 		shopping()
+	}
+
+	if(endingBool == true){
+		ending()
 	}
 	
 }
