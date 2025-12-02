@@ -29,6 +29,8 @@ let canvas
 let shoppingBool = true
 let endingBool = false
 
+let resetButton
+
 function preload(){
 	sky = loadImage('sky.jpg')
 // b = loadImage('ci/bBlouse.png')
@@ -79,6 +81,13 @@ function setup() {
  	skipButton.mousePressed(skipProduct)
 
 
+ 	resetButton = createButton('Restart')
+ 	resetButton.mousePressed(resetShopping)
+ 	resetButton.position(windowWidth/2, windowHeight - 100 )
+ 	resetButton.hide()
+
+
+
  imageMode(CENTER)
 }
 
@@ -103,6 +112,20 @@ function skipProduct(){
 	}
 }
 
+function resetShopping(){
+	if(customerChoices.length > 0){
+		customerChoices.splice(0, customerChoices.length)
+	}
+
+	print(customerChoices.length)
+	index = 0
+	lastMillis = 0;
+	imageIndexNum = 0
+	endingBool = false
+	shoppingBool = true
+
+}
+
 
 function intro(){
 	
@@ -112,6 +135,11 @@ function intro(){
 function shopping(){
 
 	background(255);
+	resetButton.hide()
+	skipButton.show()
+	shoppingCart.show()
+
+	textAlign(LEFT, TOP);
 	image(sky, windowWidth/2, windowHeight/2, windowWidth,windowHeight)
 
 	image(imageArray[imageIndexNum], windowWidth/2, windowHeight/2, imageArray[0].width/2, imageArray[0].height/2)
@@ -133,6 +161,7 @@ function shopping(){
 	}
 
 	if(imageIndexNum == 10){
+		image(sky, windowWidth/2, windowHeight/2, windowWidth,windowHeight)
 		print("End of Shopping!")
 		shoppingBool = false
 		endingBool = true
@@ -146,6 +175,10 @@ function ending(){
 	shoppingCart.hide()
 	skipButton.hide()
 	textAlign(CENTER);
+	//image(sky, windowWidth/2, windowHeight/2, windowWidth,windowHeight)
+
+	resetButton.show()
+	
 	frameRate(15)
 	if(customerChoices.length == 0){
 		background(0)
@@ -153,7 +186,11 @@ function ending(){
 		text("You didn't choose anything, I don't understand you...", windowWidth/2, windowHeight/2)
 	}
 
-	if(customerChoices.length > 0){
+	if(customerChoices.length > 1 && customerChoices.length < 5){
+		text("Give me more data!!!!!...", windowWidth/2, windowHeight/2)
+	}
+
+	if(customerChoices.length >= 5){
 
 		//background(0)
 		
@@ -167,6 +204,8 @@ function ending(){
 		for(i = 0; i< customerChoices.length; i++){
 			image(customerChoices[i], i*imageArray[i].width/4+(imageArray[i].width/4+10), windowHeight/2, imageArray[i].width/4, imageArray[i].height/4)
 		}
+		fill(255)
+		rect(windowWidth/2-450, windowHeight/2, 950, 100)
 
 		fill(0)
 		text("In the age of digital consumerism, we’re not the customers — we’re the data being harvested.", windowWidth/2-450, windowHeight/2, 900)
