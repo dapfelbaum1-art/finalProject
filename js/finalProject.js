@@ -13,11 +13,8 @@ let r1
 let rS
 let r3
 let r2
-
 let table
-
 let imageArray = []
-
 let imageIndexNum = 0
 
 let customerChoices = []
